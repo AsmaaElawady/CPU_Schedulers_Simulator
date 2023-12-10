@@ -1,65 +1,80 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class CPUScheduler {
-    int noOfProcesses;
-    int contextSwitch;
-    int RRTimeQuantum;
-    List<Process> processes;
 
-    public CPUScheduler(int noOfProcesses, int contextSwitch, int RRTimeQuantum) {
+    static public void main (String[] arg)
+    {
+        int noOfProcesses;
+        int contextSwitch;
+        int RRTimeQuantum;
+        ArrayList<Process> Processes = new ArrayList<Process>();
+
         Scanner sc = new Scanner(System.in);
-        this.noOfProcesses = noOfProcesses;
-        this.contextSwitch = contextSwitch;
-        this.RRTimeQuantum = RRTimeQuantum;
-        processes = new ArrayList<>();
-        for(int i = 0; i < noOfProcesses; i++){
-            String name, color;
-            int arrivalTime, burstTime, priorityNumber;
-            System.out.println("Enter the process name: ");
-            name = sc.nextLine();
+
+        System.out.println("the number of processes: ");
+        noOfProcesses = sc.nextInt();
+
+        System.out.println("Enter the context switch: ");
+        contextSwitch = sc.nextInt();
+
+        System.out.println("the Round Robin Time Quantum: ");
+        RRTimeQuantum = sc.nextInt();
+
+
+        // Read Processes
+        for(int i = 0 ; i < noOfProcesses ;i++)
+        {
+            sc = new Scanner(System.in);
+            Process p = new Process();
+            System.out.println( (i+1) +"Enter the process name: ");
+            p.setName(sc.nextLine());
+
             System.out.println("Enter the process color: ");
-            color = sc.nextLine();
+            p.setColor(sc.nextLine());
+
             System.out.println("Enter the process arrival time: ");
-            arrivalTime = sc.nextInt();
+            p.setArrivalTime(sc.nextInt()) ;
+
             System.out.println("Enter the process burst time: ");
-            burstTime = sc.nextInt();
+            p.setBurstTime(sc.nextInt())  ;
+
             System.out.println("Enter the process priority number: ");
-            priorityNumber = sc.nextInt();
+            p.setPriority(sc.nextInt());
 
-            Process process = new Process(name, color, arrivalTime, burstTime, priorityNumber);
-            processes.add(process);
+            Processes.add(p);
         }
 
-        int choice;
-        System.out.println("Choose Scheduler: ");
-        System.out.println("1- Shortest Job First.");
-        choice = sc.nextInt();
-        switch (choice) {
-            case 1:
-                shortestJobFirst();
-                break;
-        
-            default:
-                break;
+        System.out.println("\nSelect the Scheduler you want to use : "
+                + "\n1-Non-Preemptive Shortest- Job First (SJF)"
+                + "\n2-Shortest-Remaining Time First (SRTF) Scheduling"
+                + "\n3-Non-preemptive Priority Scheduling."
+                + "\n4-AG Scheduling \n5-End");
+        int select = sc.nextInt();
+        if(select == 1)
+        {
         }
+        else if(select == 2)
+        {
+        }
+        // else if(select == 3)
+        // {
+        //     PriorityScheduling pScheduling = new PriorityScheduling(Processes);
+        //     pScheduling.startScheduling();
+
+        //     System.out.println( "average Waiting Time :  " + pScheduling.getAverageWaiting());
+        //     System.out.println("average Turnaround Time :" + pScheduling.getAverageTurnAround() + "\n");
+        // }
+        else if(select == 4)
+        {
+        }
+        else
+        {
+            System.out.println("Invalid input");
+        }
+
+        for(int i = 0 ; i < Processes.size();i++)
+            Processes.get(i).printProcess();
     }
 
-    public void shortestJobFirst(){
-        System.out.println("hello");
-    }
-
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Eter the number of processes: ");
-        int noOfProcesses = sc.nextInt();
-        System.out.println("Eter the context switch: ");
-        int contextSwitch = sc.nextInt();
-        System.out.println("Eter the Round Robin Time Quantum: ");
-        int RRTimeQuantum = sc.nextInt();
-
-        CPUScheduler cpuScheduler = new CPUScheduler(noOfProcesses, contextSwitch, RRTimeQuantum);
-    }
 }

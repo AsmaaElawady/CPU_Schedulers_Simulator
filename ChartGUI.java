@@ -46,15 +46,15 @@ public class ChartGUI {
         frame.setVisible(true);
     }
 
-    // public void AddColor(int row, int col, Color c, int nExecutes) {
-    //     for (int i = 0; i < nExecutes; i++) {
-    //         JButton bu = new JButton();
-    //         gbc.gridx = row + i;
-    //         gbc.gridy = col;
-    //         gbc.gridwidth = 1;
-    //         bu.setBackground(c);
-    //         panal.add(bu, gbc);
-    //         frame.setVisible(true);
-    //     }
-    // }
+    public void AddColor(int row, int col, Color c, int nExecutes) {
+        for (int i = 0; i < nExecutes; i++) {
+            JButton bu = new JButton();
+            gbc.gridx = row + i;
+            gbc.gridy = col;
+            gbc.gridwidth = 1;
+            bu.setBackground(c);
+            panal.add(bu, gbc);
+            frame.setVisible(true);
+        }
+    }
 }

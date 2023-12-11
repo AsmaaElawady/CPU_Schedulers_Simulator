@@ -49,7 +49,7 @@ public class CPUScheduler {
                 + "\n4-AG Scheduling \n5-End");
         int select = sc.nextInt();
         if (select == 1) {
-            SJF sjf = new SJF(Processes, contextSwitch);
+            // SJF sjf = new SJF(Processes, contextSwitch);
         } else if (select == 2) {
             SRTF srtf = new SRTF(Processes);
             srtf.startProcessing();

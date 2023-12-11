@@ -35,6 +35,7 @@ public class SRTF {
         for (int i = 0; i < processes.size(); i++) {
             SRTFProcess temp = new SRTFProcess();
             temp.setName(processes.get(i).getName());
+            temp.setNumber(processes.get(i).getNumber());
             //temp.setColor(processes.get(i).getColor());
             temp.setArrivalTime(processes.get(i).getArrivalTime());
             temp.setBurstTime(processes.get(i).getBurstTime());

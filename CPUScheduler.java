@@ -12,7 +12,7 @@ public class CPUScheduler {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("the number of processes: ");
+        System.out.println("Enter number of processes: ");
         noOfProcesses = sc.nextInt();
 
         System.out.println("Enter the context switch: ");
@@ -27,7 +27,7 @@ public class CPUScheduler {
         {
             sc = new Scanner(System.in);
             Process p = new Process();
-            System.out.println( (i+1) +"Enter the process name: ");
+            System.out.println( "Enter process name " + (i+1)  + " :");
             p.setName(sc.nextLine());
 
             System.out.println("Enter the process color: ");
@@ -56,6 +56,7 @@ public class CPUScheduler {
         }
         else if(select == 2)
         {
+            
         }
         // else if(select == 3)
         // {

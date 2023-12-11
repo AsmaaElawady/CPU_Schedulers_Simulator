@@ -6,7 +6,7 @@ public class AG {
     ArrayList<AGprocess> dieList;
 
     
-    public AG(ArrayList<Process> processes) {
+    public AG(ArrayList<Process> processes, int quantm) {
         this.processesList = new ArrayList<AGprocess>(processes.size());
         for (int i = 0; i < processes.size(); i++) {
             AGprocess temp = new AGprocess();
@@ -15,6 +15,7 @@ public class AG {
             //temp.setColor(processes.get(i).getColor());
             temp.setArrivalTime(processes.get(i).getArrivalTime());
             temp.setBurstTime(processes.get(i).getBurstTime());
+            temp.setQuantm(quantm);
             this.processesList.add(temp) ; 
         }
     }

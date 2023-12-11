@@ -1,7 +1,9 @@
 public class AGprocess extends Process {
 
     private int agFactor;
+    private int quantm;
 
+   
     public AGprocess(){
         
     }
@@ -16,6 +18,14 @@ public class AGprocess extends Process {
     }
     public void setAgFactor(int agFactor) {
         this.agFactor = agFactor;
+    }
+    
+     public int getQuantm() {
+        return quantm;
+    }
+
+    public void setQuantm(int quantm) {
+        this.quantm = quantm;
     }
 
 

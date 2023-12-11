@@ -27,7 +27,7 @@ class brustCompartor implements Comparator<SRTFProcess> {
 public class SRTF {
 
     ArrayList<SRTFProcess> processesList;
-    double agingFactor = 0.5;
+    double agingFactor = 2;
 
     public SRTF(ArrayList<Process> processes) {
         

@@ -1,19 +1,17 @@
 import java.awt.Color;
 
-public class Process implements Comparable<Process> {
-    private String Name;
-    private Color ProcessColor; // will use it in GUI
-    private int BurstTime;
-    private int ArrivalTime;
-    private int Priority;
-    private int WaitingTime;
-    private int TurnaroundTime;
-    private int processingTime;
-    private int number;
-
-    private int StartTime;
-
-    private int LastTimeAged;
+ class Process  {
+    protected String Name;
+    protected Color ProcessColor; // will use it in GUI
+    protected int BurstTime;
+    protected int ArrivalTime;
+    protected int Priority;
+    protected int WaitingTime;
+    protected int TurnaroundTime;
+    protected int processingTime;
+    protected int number;
+    protected int StartTime;
+    protected int LastTimeAged;
 
     public Process() {
 
@@ -144,10 +142,7 @@ public class Process implements Comparable<Process> {
         return ProcessColor;
     }
 
-    @Override
-    public int compareTo(Process o) {
-        return this.getArrivalTime() - o.getArrivalTime();
-    }
+   
 
     public int getLastTimeAged() {
         return LastTimeAged;
@@ -155,6 +150,12 @@ public class Process implements Comparable<Process> {
 
     public void setLastTimeAged(int lastTimeAged) {
         LastTimeAged = lastTimeAged;
+    }
+    public int getProcessingTime() {
+        return processingTime;
+    }
+     public void setProcessingTime(int processingTime) {
+        this.processingTime = processingTime;
     }
 
 }

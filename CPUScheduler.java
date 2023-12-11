@@ -51,6 +51,8 @@ public class CPUScheduler {
         if (select == 1) {
             SJF sjf = new SJF(Processes, contextSwitch);
         } else if (select == 2) {
+            SRTF srtf = new SRTF(Processes);
+            srtf.startProcessing();
         }
         // else if(select == 3)
         // {

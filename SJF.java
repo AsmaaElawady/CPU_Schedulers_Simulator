@@ -64,16 +64,16 @@ public class SJF {
     }
 
     public static void main(String[] args) {
-        // ArrayList<Process> Processes = new ArrayList<Process>();
+        ArrayList<Process> Processes = new ArrayList<Process>();
         // Processes.add(new Process("P1", "red", 2, 6, 1, 0));
         // Processes.add(new Process("P2", "blue", 5, 2, 1, 1));
         // Processes.add(new Process("P3", "yellow", 1, 8, 1, 2));
         // Processes.add(new Process("P4", "black", 0, 3, 1, 3));
         // Processes.add(new Process("P5", "green", 4, 4, 1, 4));
-        // Processes.add(new Process("P1", "red", 0, 7, 1, 0));
-        // Processes.add(new Process("P2", "blue", 2, 4, 1, 1));
-        // Processes.add(new Process("P3", "yellow", 4, 1, 1, 2));
-        // Processes.add(new Process("P4", "black", 5, 4, 1, 3));
-        // new SJF(Processes, 5);
+        Processes.add(new Process("P1", "red", 0, 7, 1, 0));
+        Processes.add(new Process("P2", "blue", 2, 4, 1, 1));
+        Processes.add(new Process("P3", "yellow", 4, 1, 1, 2));
+        Processes.add(new Process("P4", "black", 5, 4, 1, 3));
+        new SJF(Processes, 1, null, null);
     }
 }

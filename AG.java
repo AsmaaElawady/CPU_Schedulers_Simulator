@@ -6,7 +6,7 @@ import java.util.Queue;
 
 public class AG {
     ArrayList<AGprocess> processesList;
-    ArrayList<AGprocess> dieList;
+    ArrayList<AGprocess> dieList = new ArrayList<>();
     Queue<AGprocess> readyQueue = new LinkedList<>();
 
     public AG(ArrayList<Process> processes, int quantm) {
@@ -30,30 +30,37 @@ public class AG {
         int totalTime = 0;
         AGprocess currProcess = processesList.get(0);
         while (processesList.size() > 0) {
-            // System.out.println(currProcess.getQuantm());
+            System.out.println("process " + currProcess.getName() + " is now in cpu.");
+
+            // calculate the time the process will be non preemptive in it, after this time the process will be preemptive.
             halfQTime = Math.ceil(currProcess.getQuantm() / 2.0);
-            System.out.println("processes in ready queue now: ");
-
-            for (AGprocess process : readyQueue) {
-                System.out.println(process.getName());
-            }
-
             System.out.println("half time for process " + currProcess.getName() + " " + halfQTime);
+            
+            System.out.println("processes in ready queue now: ");
+            if (readyQueue.size() == 0) {
+                System.out.println("no processes in ready queue now.");
+            }else{
+                for (AGprocess process : readyQueue) {
+                    System.out.println(process.getName());
+                }
+            }
 
             // loop for the current process.
             for (int i = 0; i < currProcess.getQuantm(); i++) {
-                System.out.println("process " + currProcess.getName() + " is now in cpu.");
                 totalTime++; // to check arrival time for processes.
                 System.out.println("total time: " + totalTime);
 
                 // check if process finished its burst time before the quantum time ended.
+                // i indicates the time the process in cpu.
                 if (currProcess.getBurstTime() == (i + 1)) {
                     System.out.println(currProcess.getName() + " its burst time ended.");
                     // update quantum time to 0
                     currProcess.setQuantm(0);
-                    // remove this process
+                    // add this process to die list
+                    dieList.add(currProcess);
+                    // remove this process from processes list.
                     processesList.remove(processesList.indexOf(currProcess));
-                    // get the first process in the queue.
+                    // get the first process in the ready queue.
                     currProcess = readyQueue.poll();
                     break;
                 }
@@ -70,7 +77,7 @@ public class AG {
                     System.out.println("new burst time: " + currProcess.getBurstTime());
                     // // add current process to ready queue.
                     // if(!readyQueue.contains(currProcess))
-                    //     readyQueue.add(currProcess);
+                    // readyQueue.add(currProcess);
                     // get the first process in ready queue
                     currProcess = readyQueue.poll();
                     break;
@@ -84,11 +91,13 @@ public class AG {
                     // this process should be with arrival time greater than total time.
                     AGprocess oldProcess = currProcess;
                     for (AGprocess process : processesList) {
-                        if (process.getAgFactor() < currProcess.getAgFactor() && process.getArrivalTime() <= totalTime) {
+                        if (process.getAgFactor() < currProcess.getAgFactor()
+                                && process.getArrivalTime() <= totalTime) {
                             currProcess = process;
                             checkNewProcess = true;
                             // to add new processes arrived
-                        }else if(process.getArrivalTime() <= totalTime && !readyQueue.contains(process) && process != oldProcess){
+                        } else if (process.getArrivalTime() <= totalTime && !readyQueue.contains(process)
+                                && process != oldProcess) {
                             readyQueue.add(process);
                             // System.out.println("prosess added!");
                         }
@@ -97,8 +106,8 @@ public class AG {
                         System.out.println("new process founded with smaller ag factor.");
                         // update the quatum time: increase its Quantum time by the remaining unused
                         // Quantum time of this process.
-                        oldProcess.setQuantm(oldProcess.getQuantm() + (oldProcess.getQuantm() - (i + 1))); // i refers to the quantum time consumed.
-                        System.out.println("new quantum time" + oldProcess.getQuantm());
+                        oldProcess.setQuantm(oldProcess.getQuantm() + (oldProcess.getQuantm() - (i + 1))); // i refers to the quantum time consumend.
+                        System.out.println("new quantum time " + oldProcess.getQuantm());
                         // update burst time: decrease it by the amount consumed.
                         oldProcess.setBurstTime(oldProcess.getBurstTime() - (i + 1));
                         System.out.println("new burst time: " + oldProcess.getBurstTime());
@@ -106,8 +115,8 @@ public class AG {
                         // if(!readyQueue.contains(oldProcess))
                         readyQueue.add(oldProcess);
                         // check if current process in reade queue remove it.
-                        for (AGprocess process: readyQueue) {
-                            if(process == currProcess){
+                        for (AGprocess process : readyQueue) {
+                            if (process == currProcess) {
                                 readyQueue.remove(process);
                                 break;
                             }
@@ -182,8 +191,8 @@ public class AG {
 
         AG ag = new AG(Processes, 4);
         ag.makeAgFactor();
-        ag.printProcesses();
-        System.out.println();
+        // ag.printProcesses();
+        // System.out.println();
         ag.startProcessing();
     }
 }

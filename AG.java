@@ -61,7 +61,10 @@ public class AG {
                     // remove this process from processes list.
                     processesList.remove(processesList.indexOf(currProcess));
                     // get the first process in the ready queue.
-                    currProcess = readyQueue.poll();
+                    if(readyQueue.size() != 0)
+                        currProcess = readyQueue.poll();
+                    else if(processesList.size() != 0)
+                        currProcess = processesList.get(0);
                     break;
                 }
 
@@ -77,7 +80,7 @@ public class AG {
                     System.out.println("new burst time: " + currProcess.getBurstTime());
                     // // add current process to ready queue.
                     // if(!readyQueue.contains(currProcess))
-                    // readyQueue.add(currProcess);
+                    readyQueue.add(currProcess);
                     // get the first process in ready queue
                     currProcess = readyQueue.poll();
                     break;
@@ -91,21 +94,20 @@ public class AG {
                     // this process should be with arrival time greater than total time.
                     AGprocess oldProcess = currProcess;
                     for (AGprocess process : processesList) {
-                        if (process.getAgFactor() < currProcess.getAgFactor()
-                                && process.getArrivalTime() <= totalTime) {
+                        // check for new process arrived with smaller ag factor. 
+                        if (process.getAgFactor() < currProcess.getAgFactor() && process.getArrivalTime() <= totalTime && !readyQueue.contains(process)) {
                             currProcess = process;
                             checkNewProcess = true;
-                            // to add new processes arrived
+                            // if the a new process arrived but with greater ag factor -> just push it in ready queue.
                         } else if (process.getArrivalTime() <= totalTime && !readyQueue.contains(process)
                                 && process != oldProcess) {
+                            System.out.println("new process arrived and added to ready queue! " + process.getName());
                             readyQueue.add(process);
-                            // System.out.println("prosess added!");
                         }
                     }
                     if (checkNewProcess) {
                         System.out.println("new process founded with smaller ag factor.");
-                        // update the quatum time: increase its Quantum time by the remaining unused
-                        // Quantum time of this process.
+                        // update the quatum time: increase its Quantum time by the remaining unused Quantum time of this process.
                         oldProcess.setQuantm(oldProcess.getQuantm() + (oldProcess.getQuantm() - (i + 1))); // i refers to the quantum time consumend.
                         System.out.println("new quantum time " + oldProcess.getQuantm());
                         // update burst time: decrease it by the amount consumed.
@@ -114,13 +116,13 @@ public class AG {
                         // add current process to the ready queue
                         // if(!readyQueue.contains(oldProcess))
                         readyQueue.add(oldProcess);
-                        // check if current process in reade queue remove it.
-                        for (AGprocess process : readyQueue) {
-                            if (process == currProcess) {
-                                readyQueue.remove(process);
-                                break;
-                            }
-                        }
+                        // check if current process in ready queue remove it.
+                        // for (AGprocess process : readyQueue) {
+                        //     if (process == currProcess) {
+                        //         readyQueue.remove(process);
+                        //         break;
+                        //     }
+                        // }
                         break;
                     }
                 }
@@ -143,24 +145,29 @@ public class AG {
     }
 
     public void makeAgFactor() {
-        // for (AGprocess proc : processesList) {
-        // int agFac = 0 , randNum;
-        // randNum = (int) (Math.random() * 21); // creates number betweem 0->20
+        for (AGprocess proc : processesList) {
+        int agFac = 0 , randNum;
+        randNum = (int) (Math.random() * 21); // creates number betweem 0->20
+        System.out.println("random number: " + randNum);
 
-        // if (randNum < 10) {
-        // agFac = randNum + proc.getArrivalTime() + proc.getBurstTime();
-        // }else if (randNum > 10){
-        // agFac = 10 + proc.getArrivalTime() + proc.getBurstTime();
-        // }else if (randNum == 10 ){
-        // agFac = proc.getPriority() + proc.getArrivalTime() + proc.getBurstTime();
-        // }
+        if (randNum < 10) {
+        agFac = randNum + proc.getArrivalTime() + proc.getBurstTime();
+        }else if (randNum > 10){
+        agFac = 10 + proc.getArrivalTime() + proc.getBurstTime();
+        }else if (randNum == 10 ){
+        agFac = proc.getPriority() + proc.getArrivalTime() + proc.getBurstTime();
+        }
 
-        // proc.setAgFactor(agFac);
-        // }
-        processesList.get(0).setAgFactor(20);
-        processesList.get(1).setAgFactor(17);
-        processesList.get(2).setAgFactor(16);
-        processesList.get(3).setAgFactor(43);
+        proc.setAgFactor(agFac);
+        }
+        // processesList.get(0).setAgFactor(20);
+        // processesList.get(1).setAgFactor(17);
+        // processesList.get(2).setAgFactor(16);
+        // processesList.get(3).setAgFactor(43);
+        // processesList.get(0).setAgFactor(17);
+        // processesList.get(1).setAgFactor(12);
+        // processesList.get(2).setAgFactor(24);
+        // processesList.get(3).setAgFactor(43);
     }
 
     public void runProcess(AGprocess process, int compTime) {
@@ -191,8 +198,8 @@ public class AG {
 
         AG ag = new AG(Processes, 4);
         ag.makeAgFactor();
-        // ag.printProcesses();
-        // System.out.println();
+        ag.printProcesses();
+        System.out.println();
         ag.startProcessing();
     }
 }

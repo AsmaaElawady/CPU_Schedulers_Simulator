@@ -41,7 +41,8 @@ public class SJF {
             avgWaitingTime += minProcess.getWaitingTime();
             System.out.println("process " + minProcess.getName() + " waiting time: " + minProcess.getWaitingTime());
             this.schedulingGUI.updateTableRow(row, "Waiting Time", minProcess.getWaitingTime()); // Update waiting time in table
-            this.chart.AddColor(totalTime+1, minProcess.getNumber(), minProcess.getColor()); // add the process in the chart.
+            // this.chart.AddColor(totalTime+1, minProcess.getNumber(), minProcess.getColor()); // add the process in the chart.
+            this.chart.AddColor(totalTime+1, minProcess.getNumber(), minProcess.getColor(), minProcess.getBurstTime()); // add the process in the chart.
             
             totalTime += (minProcess.getBurstTime() + this.contextSwitch);
             

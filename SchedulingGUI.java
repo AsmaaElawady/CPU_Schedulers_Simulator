@@ -133,7 +133,10 @@ public class SchedulingGUI {
             case "SJF":
                 SJF sjf = new SJF(Processes, contextSwitch, chart, SchedulingGUI.this);
                 break;
-
+            case "SRTF":
+                SRTF srtf = new SRTF(Processes, chart, SchedulingGUI.this);
+                srtf.startProcessing();
+                break;
             default:
                 break;
         }

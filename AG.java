@@ -18,6 +18,7 @@ public class AG {
             temp.setArrivalTime(processes.get(i).getArrivalTime());
             temp.setBurstTime(processes.get(i).getBurstTime());
             temp.setPriority(processes.get(i).getPriority());
+            temp.setColor(processes.get(i).color);
             temp.setQuantm(quantm);
             this.processesList.add(temp);
         }

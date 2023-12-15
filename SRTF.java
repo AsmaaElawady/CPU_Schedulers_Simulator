@@ -137,9 +137,9 @@ public class SRTF {
         }
 
         avrWaiting /= nProcess;
-        avrWaiting = Math.floor(avrWaiting);
+        avrWaiting = avrWaiting;
         avrTAT /= nProcess;
-        avrTAT = Math.floor(avrTAT);
+        avrTAT = avrTAT;
         Object[] avgWaiting = {"Average waiting time", avrWaiting};
         this.schedulingGUI.addRow(avgWaiting);
         System.out.println("Average waiting time: " + avrWaiting);

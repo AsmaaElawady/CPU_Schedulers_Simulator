@@ -1,12 +1,12 @@
 import java.util.*;
 
 public class AG {
-    ChartGUI chart; // to visualize the order of precesses in cpu.
-    SchedulingGUI schedulingGUI; // to show the avg time and TAT for each process.
     ArrayList<AGprocess> processesList;
     ArrayList<AGprocess> dieList = new ArrayList<>();
     Queue<AGprocess> readyQueue = new LinkedList<>();
-    
+    ChartGUI chart;
+    SchedulingGUI schedulingGUI;
+
     public AG(ChartGUI chart, SchedulingGUI schedulingGUI, ArrayList<Process> processes, int quantm) {
         this.chart = chart;
         this.schedulingGUI = schedulingGUI;
@@ -20,7 +20,6 @@ public class AG {
             temp.setBurstTime(processes.get(i).getBurstTime());
             temp.setTempBurst(processes.get(i).getBurstTime());
             temp.setPriority(processes.get(i).getPriority());
-            //temp.setColor(processes.get(i).color);
             temp.setQuantm(quantm);
             temp.setColor(processes.get(i).getColorString());
             this.processesList.add(temp);
@@ -40,14 +39,13 @@ public class AG {
 
         AGprocess currProcess = processesList.get(0);
         while (processesList.size() > 0) {
-            System.out.println("process " + currProcess.getName() + " is now in cpu.");
-       
-        
+            // check for the arrival time of current process, it may be greater than total time.
+            if(currProcess.getArrivalTime() > totalTime){
+                totalTime+=currProcess.getArrivalTime();
+            }
 
-        while (processesList.size() > 0) {
-
             System.out.println("process " + currProcess.getName() + " is now in cpu.");
-            this.chart.AddColor(totalTime+1, currProcess.getNumber(), currProcess.getColor(), 1);
+
             // calculate the time the process will be non preemptive in it, after this time the process will be preemptive.
             halfQTime = Math.ceil(currProcess.getQuantm() / 2.0);
             System.out.println("half time for process " + currProcess.getName() + " " + halfQTime);
@@ -96,7 +94,10 @@ public class AG {
                     // remove this process from processes list.
                     processesList.remove(processesList.indexOf(currProcess));
                     // get the first process in the ready queue.
-                    currProcess = readyQueue.poll();
+                    if(readyQueue.size() != 0)
+                        currProcess = readyQueue.poll();
+                    else if(processesList.size() != 0)
+                        currProcess = processesList.get(0);
                     break;
                 }
 
@@ -184,10 +185,9 @@ public class AG {
                 }
             }
         }
+        System.out.println("waiting time: " + avrWaiting);
         avrWaiting /= nProcess;
-        avrWaiting = Math.floor(avrWaiting);
         avrTAT /= nProcess;
-        avrTAT = Math.floor(avrTAT);
         Object[] avgWaiting = {"Average waiting time", avrWaiting};
         this.schedulingGUI.addRow(avgWaiting);
         System.out.println("Average waiting time: " + avrWaiting);
@@ -195,8 +195,6 @@ public class AG {
         this.schedulingGUI.addRow(avgTATRow);
         System.out.println("Average TAT: " + avrTAT);
     }
-}
-
 
     public int calcMean(int totalTime) {
         int result = 0;
@@ -213,25 +211,25 @@ public class AG {
     }
 
     public void makeAgFactor() {
-        // for (AGprocess proc : processesList) {
-        // int agFac = 0 , randNum;
-        // randNum = (int) (Math.random() * 21); // creates number betweem 0->20
-        // System.out.println("random number: " + randNum);
+        for (AGprocess proc : processesList) {
+        int agFac = 0 , randNum;
+        randNum = (int) (Math.random() * 21); // creates number betweem 0->20
+        System.out.println("random number: " + randNum);
 
-        // if (randNum < 10) {
-        // agFac = randNum + proc.getArrivalTime() + proc.getBurstTime();
-        // }else if (randNum > 10){
-        // agFac = 10 + proc.getArrivalTime() + proc.getBurstTime();
-        // }else if (randNum == 10 ){
-        // agFac = proc.getPriority() + proc.getArrivalTime() + proc.getBurstTime();
-        // }
+        if (randNum < 10) {
+        agFac = randNum + proc.getArrivalTime() + proc.getBurstTime();
+        }else if (randNum > 10){
+        agFac = 10 + proc.getArrivalTime() + proc.getBurstTime();
+        }else if (randNum == 10 ){
+        agFac = proc.getPriority() + proc.getArrivalTime() + proc.getBurstTime();
+        }
 
-        // proc.setAgFactor(agFac);
-        // }
-        processesList.get(0).setAgFactor(20);
-        processesList.get(1).setAgFactor(17);
-        processesList.get(2).setAgFactor(16);
-        processesList.get(3).setAgFactor(43);
+        proc.setAgFactor(agFac);
+        }
+        // processesList.get(0).setAgFactor(20);
+        // processesList.get(1).setAgFactor(17);
+        // processesList.get(2).setAgFactor(16);
+        // processesList.get(3).setAgFactor(43);
         // processesList.get(0).setAgFactor(17);
         // processesList.get(1).setAgFactor(12);
         // processesList.get(2).setAgFactor(24);
@@ -257,18 +255,5 @@ public class AG {
         }
     }
 
-    public static void main(String[] args) {
-        ArrayList<Process> Processes = new ArrayList<Process>();
-        Processes.add(new Process("P1", "red", 0, 17, 4, 0));
-        Processes.add(new Process("P2", "blue", 3, 6, 9, 1));
-        Processes.add(new Process("P3", "yellow", 4, 10, 3, 2));
-        Processes.add(new Process("P4", "black", 29, 4, 8, 3));
-
-        // AG ag = new AG(Processes, 4);
-        // ag.makeAgFactor();
-        // ag.printProcesses();
-        // System.out.println();
-        // ag.startProcessing();
-    }
+    
 }
-

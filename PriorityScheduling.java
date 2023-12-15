@@ -9,17 +9,21 @@ public class PriorityScheduling {
     ArrayList<Process> copy ;//which have already been processed
 
     ChartGUI gui ;
+    SchedulingGUI schedulingGUI; // to show the avg time and TAT for each process.
 
     int currentTime = 0 ;
     int agingValue = 5 ;
-    PriorityScheduling(ArrayList<Process> P){
+    PriorityScheduling(ArrayList<Process> P , ChartGUI chart, SchedulingGUI schedulingGUI){
         for(Process i : P)
         {
             processes.add(new Process(i));
         }
 
-        gui = new ChartGUI(processes);
+        //gui = new ChartGUI(processes);
         copy = new ArrayList<Process>(processes);
+        gui = chart;
+        this.schedulingGUI = schedulingGUI;
+
 
         // sort the processes according to the arrival time.
         Collections.sort(processes, Comparator.comparing(Process::getArrivalTime));
@@ -63,7 +67,9 @@ public class PriorityScheduling {
 
                 // calculate waiting and turnaround time for the current process
                 currentProcess.setWaitingTime( currentProcess.getStartTime() - currentProcess.getArrivalTime());
+                this.schedulingGUI.updateTableRow(currentProcess.getNumber(), "Waiting Time", currentProcess.getWaitingTime()); // Update waiting time in table
                 currentProcess.setTurnaroundTime(currentProcess.getWaitingTime() + currentProcess.getBurstTime() );
+                this.schedulingGUI.updateTableRow(currentProcess.getNumber(), "TAT", currentProcess.getTurnaroundTime()); // Update TAT in table
 
                 executedProcesses.add(currentProcess);
                 processes.remove(currentProcess);
@@ -71,6 +77,10 @@ public class PriorityScheduling {
                 constructWaitingQueue(currentTime);
                 agingProcess(agingValue);
                 currentProcess.execute();
+                Object[] avgWaiting = {"Average waiting time", getAverageWaiting()};
+                this.schedulingGUI.addRow(avgWaiting);
+                Object[] avgTATRow = {"Average TAT time", getAverageTurnAround()};
+                this.schedulingGUI.addRow(avgTATRow);
             }
         }
     }
@@ -141,4 +151,3 @@ public class PriorityScheduling {
     }
 
 }
-

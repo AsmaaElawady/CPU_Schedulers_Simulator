@@ -1,13 +1,47 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
+
+class agFactorCompartor implements Comparator<AGprocess> {
+
+    @Override
+    public int compare(AGprocess o1, AGprocess o2) {
+        if (o1.getAgFactor() == o2.getAgFactor()) {
+            return o1.getArrivalTime() - o2.getArrivalTime();
+        } else {
+            return o1.getAgFactor() - o2.getAgFactor();
+        }
+    }
+
+}
+
+
+
 
 public class AG {
+    ChartGUI chart; // to visualize the order of precesses in cpu.
+    SchedulingGUI schedulingGUI; // to show the avg time and TAT for each process.
     ArrayList<AGprocess> processesList;
     ArrayList<AGprocess> dieList = new ArrayList<>();
-    Queue<AGprocess> readyQueue = new LinkedList<>();
+    PriorityQueue<AGprocess> readyQueue = new PriorityQueue<>(new agFactorCompartor());
+
+    public AG(ChartGUI chart, SchedulingGUI schedulingGUI, ArrayList<Process> processes , int quantm) {
+        this.chart = chart;
+        this.schedulingGUI = schedulingGUI;
+        this.processesList = new ArrayList<AGprocess>(processes.size());
+        for (int i = 0; i < processes.size(); i++) {
+            AGprocess temp = new AGprocess();
+            temp.setName(processes.get(i).getName());
+            temp.setNumber(processes.get(i).getNumber());
+            temp.setArrivalTime(processes.get(i).getArrivalTime());
+            temp.setBurstTime(processes.get(i).getBurstTime());
+            temp.setTempBurst(processes.get(i).getBurstTime());
+            temp.setPriority(processes.get(i).getPriority());
+            //temp.setColor(processes.get(i).color);
+            temp.setQuantm(quantm);
+            this.processesList.add(temp);
+        }
+        // sort the processes according to the arrival time.
+        Collections.sort(processesList, Comparator.comparing(Process::getArrivalTime));
+    }
 
     public AG(ArrayList<Process> processes, int quantm) {
         this.processesList = new ArrayList<AGprocess>(processes.size());
@@ -17,8 +51,9 @@ public class AG {
             temp.setNumber(processes.get(i).getNumber());
             temp.setArrivalTime(processes.get(i).getArrivalTime());
             temp.setBurstTime(processes.get(i).getBurstTime());
+            temp.setTempBurst(processes.get(i).getBurstTime());
             temp.setPriority(processes.get(i).getPriority());
-            temp.setColor(processes.get(i).color);
+            //temp.setColor(processes.get(i).color);
             temp.setQuantm(quantm);
             this.processesList.add(temp);
         }
@@ -27,12 +62,18 @@ public class AG {
     }
 
     public void startProcessing() {
-        double halfQTime;
-        int totalTime = 0;
-        AGprocess currProcess = processesList.get(0);
-        while (processesList.size() > 0) {
-            System.out.println("process " + currProcess.getName() + " is now in cpu.");
 
+        double halfQTime;
+        
+        AGprocess currProcess = processesList.get(0);
+        double avrTAT  = 0 , avrWaiting = 0;
+        int nProcess = processesList.size() ,totalTime = 0;
+        
+
+        while (processesList.size() > 0) {
+
+            System.out.println("process " + currProcess.getName() + " is now in cpu.");
+            this.chart.AddColor(totalTime+1, currProcess.getNumber(), currProcess.getColor(), 1);
             // calculate the time the process will be non preemptive in it, after this time the process will be preemptive.
             halfQTime = Math.ceil(currProcess.getQuantm() / 2.0);
             System.out.println("half time for process " + currProcess.getName() + " " + halfQTime);
@@ -54,6 +95,20 @@ public class AG {
                 // check if process finished its burst time before the quantum time ended.
                 // i indicates the time the process in cpu.
                 if (currProcess.getBurstTime() == (i + 1)) {
+                    // add gui things here
+                    ////////////////////////////////////////////////////////////////
+                    currProcess.setTurnaroundTime(currProcess.getProcessingTime() - currProcess.getArrivalTime());
+                currProcess.setWaitingTime(currProcess.getTurnaroundTime() - currProcess.getTempBurst());
+               
+                int row = currProcess.getNumber();
+                //Gui updating part
+                 row = currProcess.getNumber(); 
+                this.schedulingGUI.updateTableRow(row, "Waiting Time", currProcess.getWaitingTime());
+                this.schedulingGUI.updateTableRow(row, "TAT", currProcess.getTurnaroundTime());
+                avrWaiting += currProcess.getWaitingTime();
+                avrTAT += currProcess.getTurnaroundTime();
+
+                ////////////////////////////////////////////////////////////////
                     System.out.println(currProcess.getName() + " its burst time ended.");
                     // update quantum time to 0
                     currProcess.setQuantm(0);
@@ -129,7 +184,19 @@ public class AG {
                 }
             }
         }
+
+        avrWaiting /= nProcess;
+        avrWaiting = Math.floor(avrWaiting);
+        avrTAT /= nProcess;
+        avrTAT = Math.floor(avrTAT);
+        Object[] avgWaiting = {"Average waiting time", avrWaiting};
+        this.schedulingGUI.addRow(avgWaiting);
+        System.out.println("Average waiting time: " + avrWaiting);
+        Object[] avgTATRow = {"Average TAT time", avrTAT};
+        this.schedulingGUI.addRow(avgTATRow);
+        System.out.println("Average TAT: " + avrTAT);
     }
+
 
     public int calcMean(int totalTime) {
         int result = 0;
@@ -161,10 +228,10 @@ public class AG {
 
         proc.setAgFactor(agFac);
         }
-        // processesList.get(0).setAgFactor(20);
-        // processesList.get(1).setAgFactor(17);
-        // processesList.get(2).setAgFactor(16);
-        // processesList.get(3).setAgFactor(43);
+        processesList.get(0).setAgFactor(20);
+        processesList.get(1).setAgFactor(17);
+        processesList.get(2).setAgFactor(16);
+        processesList.get(3).setAgFactor(43);
         // processesList.get(0).setAgFactor(17);
         // processesList.get(1).setAgFactor(12);
         // processesList.get(2).setAgFactor(24);

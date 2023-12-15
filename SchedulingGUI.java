@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class SchedulingGUI {
+    
     JFrame frame = new JFrame("CPU Schedulers");
     GridBagConstraints gbc = new GridBagConstraints();
     JPanel panel = new JPanel();
@@ -23,6 +24,7 @@ public class SchedulingGUI {
     JButton addButton;
     JButton startButton;
     int contextSwitch;
+    int Quantm;
 
     public SchedulingGUI() {
         panel.setLayout(new GridBagLayout());
@@ -43,14 +45,14 @@ public class SchedulingGUI {
         colorField = new JTextField(5);
         addButton = new JButton("Add Process");
         addButton.addActionListener(e -> addProcessToTable());
-        addButton.addActionListener(e -> {
-            processNameField.setText("");  // Clear the text field
-            arrivalTimeField.setText("");
-            burstTimeField.setText("");
-            priorityField.setText("");
-            colorField.setText("");
+        // addButton.addActionListener(e -> {
+        //     processNameField.setText("");  // Clear the text field
+        //     arrivalTimeField.setText("");
+        //     burstTimeField.setText("");
+        //     priorityField.setText("");
+        //     colorField.setText("");
               
-        });
+        // });
 
         addLabelAndField("Process Name:", processNameField, 0, 2);
         addLabelAndField("Arrival Time:", arrivalTimeField, 2, 2);
@@ -136,6 +138,7 @@ public class SchedulingGUI {
 
     public void startScheduling() {
         contextSwitch = Integer.parseInt(contextSwitchField.getText());
+        Quantm = Integer.parseInt(quantumTimeField.getText());
         String technique = (String) schedulingTechnique.getSelectedItem();
         ChartGUI chart = new ChartGUI(Processes);
         switch (technique) {
@@ -150,6 +153,9 @@ public class SchedulingGUI {
                 SRTF srtf = new SRTF(Processes, chart, SchedulingGUI.this);
                 srtf.startProcessing();
                 break;
+            case "AG":
+            AG ag = new AG(chart, SchedulingGUI.this, Processes, Quantm);
+            ag.startProcessing();    
             default:
                 break;
         }

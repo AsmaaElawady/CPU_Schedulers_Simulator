@@ -1,12 +1,12 @@
 import java.util.*;
 
 public class AG {
+    ChartGUI chart; // to visualize the order of precesses in cpu.
+    SchedulingGUI schedulingGUI; // to show the avg time and TAT for each process.
     ArrayList<AGprocess> processesList;
     ArrayList<AGprocess> dieList = new ArrayList<>();
     Queue<AGprocess> readyQueue = new LinkedList<>();
-    ChartGUI chart;
-    SchedulingGUI schedulingGUI;
-
+    
     public AG(ChartGUI chart, SchedulingGUI schedulingGUI, ArrayList<Process> processes, int quantm) {
         this.chart = chart;
         this.schedulingGUI = schedulingGUI;
@@ -20,6 +20,7 @@ public class AG {
             temp.setBurstTime(processes.get(i).getBurstTime());
             temp.setTempBurst(processes.get(i).getBurstTime());
             temp.setPriority(processes.get(i).getPriority());
+            //temp.setColor(processes.get(i).color);
             temp.setQuantm(quantm);
             temp.setColor(processes.get(i).getColorString());
             this.processesList.add(temp);
@@ -40,7 +41,13 @@ public class AG {
         AGprocess currProcess = processesList.get(0);
         while (processesList.size() > 0) {
             System.out.println("process " + currProcess.getName() + " is now in cpu.");
+       
+        
 
+        while (processesList.size() > 0) {
+
+            System.out.println("process " + currProcess.getName() + " is now in cpu.");
+            this.chart.AddColor(totalTime+1, currProcess.getNumber(), currProcess.getColor(), 1);
             // calculate the time the process will be non preemptive in it, after this time the process will be preemptive.
             halfQTime = Math.ceil(currProcess.getQuantm() / 2.0);
             System.out.println("half time for process " + currProcess.getName() + " " + halfQTime);
@@ -188,6 +195,8 @@ public class AG {
         this.schedulingGUI.addRow(avgTATRow);
         System.out.println("Average TAT: " + avrTAT);
     }
+}
+
 
     public int calcMean(int totalTime) {
         int result = 0;
@@ -262,3 +271,4 @@ public class AG {
         // ag.startProcessing();
     }
 }
+

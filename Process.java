@@ -13,6 +13,7 @@ import java.awt.Color;
     protected int number;
     protected int StartTime;
     protected int LastTimeAged;
+    
 
     public Process() {
 
@@ -120,6 +121,7 @@ import java.awt.Color;
         setColorString(color);
         java.lang.reflect.Field field = null;
         try {
+
             field = Class.forName("java.awt.Color").getField(color.toLowerCase());
         } catch (NoSuchFieldException e) {
             e.printStackTrace();

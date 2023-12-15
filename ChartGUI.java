@@ -52,6 +52,8 @@ public class ChartGUI {
             gbc.gridx = row + i;
             gbc.gridy = col;
             gbc.gridwidth = 1;
+            bu.setOpaque(true);
+            bu.setBorderPainted(false);
             bu.setBackground(c);
             panal.add(bu, gbc);
             frame.setVisible(true);

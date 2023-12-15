@@ -23,6 +23,7 @@ public class SchedulingGUI {
     JButton addButton;
     JButton startButton;
     int contextSwitch;
+    int Quantm;
 
     public SchedulingGUI() {
         panel.setLayout(new GridBagLayout());
@@ -127,13 +128,24 @@ public class SchedulingGUI {
 
     public void startScheduling() {
         contextSwitch = Integer.parseInt(contextSwitchField.getText());
+        Quantm = Integer.parseInt(quantumTimeField.getText());
         String technique = (String) schedulingTechnique.getSelectedItem();
         ChartGUI chart = new ChartGUI(Processes);
         switch (technique) {
             case "SJF":
                 SJF sjf = new SJF(Processes, contextSwitch, chart, SchedulingGUI.this);
                 break;
-
+            case "Priority":
+                PriorityScheduling priorityScheduling = new PriorityScheduling(Processes, chart, SchedulingGUI.this);
+                priorityScheduling.startScheduling();
+                break;
+            case "SRTF":
+                SRTF srtf = new SRTF(Processes, chart, SchedulingGUI.this);
+                srtf.startProcessing();
+                break;
+            case "AG":
+            AG ag = new AG(chart, SchedulingGUI.this, Processes, Quantm);
+            ag.startProcessing();    
             default:
                 break;
         }

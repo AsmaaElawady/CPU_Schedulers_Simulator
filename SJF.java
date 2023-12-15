@@ -26,6 +26,11 @@ public class SJF {
         while(Processes.size() > 0){
             Process minProcess = Processes.get(0);
 
+            // check if the arrival time of first process in greater than totalTime (not arriving at 0)
+            if(minProcess.ArrivalTime > totalTime){
+                totalTime += minProcess.getArrivalTime();
+            }
+
             // search for the min process in the current time.
             // the process will work in cpu now of it: 1- has burst time less than others. 2- its arrival time is lower than the currTime (to make sure it is arrived).
             for (Process process : Processes) {

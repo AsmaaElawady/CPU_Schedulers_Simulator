@@ -51,16 +51,16 @@ public class CPUScheduler {
         if (select == 1) {
             // SJF sjf = new SJF(Processes, contextSwitch);
         } else if (select == 2) {
-            SRTF srtf = new SRTF(Processes);
-            srtf.startProcessing();
+            // SRTF srtf = new SRTF(Processes);
+            // srtf.startProcessing();
         }
         else if(select == 3)
         {
-        PriorityScheduling pScheduling = new PriorityScheduling(Processes);
-        pScheduling.startScheduling();
-        System.out.println("average Waiting Time : " +
-        pScheduling.getAverageWaiting());
-        System.out.println("average Turnaround Time :" + pScheduling.getAverageTurnAround() + "\n");
+        // PriorityScheduling pScheduling = new PriorityScheduling(Processes);
+        // pScheduling.startScheduling();
+        // System.out.println("average Waiting Time : " +
+        // pScheduling.getAverageWaiting());
+        // System.out.println("average Turnaround Time :" + pScheduling.getAverageTurnAround() + "\n");
         }
         else if (select == 4) {
         } else {

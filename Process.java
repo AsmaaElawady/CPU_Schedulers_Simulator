@@ -3,6 +3,7 @@ import java.awt.Color;
  class Process  {
     protected String Name;
     protected Color ProcessColor; // will use it in GUI
+    protected String color;
     protected int BurstTime;
     protected int ArrivalTime;
     protected int Priority;
@@ -34,9 +35,7 @@ import java.awt.Color;
         this.Priority = Priority;
         this.number = number;
         StartTime = -1;
-
-        LastTimeAged = ArrivalTime;// ***
-
+        LastTimeAged = ArrivalTime;
         setColor(clr);
     }
 
@@ -118,7 +117,7 @@ import java.awt.Color;
     }
 
     public void setColor(String color) {
-
+        setColorString(color);
         java.lang.reflect.Field field = null;
         try {
             field = Class.forName("java.awt.Color").getField(color.toLowerCase());
@@ -156,6 +155,14 @@ import java.awt.Color;
     }
      public void setProcessingTime(int processingTime) {
         this.processingTime = processingTime;
+    }
+
+    public void setColorString(String color){
+        this.color = color;
+    }
+
+    public String getColorString(){
+        return this.color;
     }
 
 }

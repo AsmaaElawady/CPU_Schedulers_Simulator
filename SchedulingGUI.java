@@ -43,6 +43,15 @@ public class SchedulingGUI {
         colorField = new JTextField(5);
         addButton = new JButton("Add Process");
         addButton.addActionListener(e -> addProcessToTable());
+        addButton.addActionListener(e -> {
+            processNameField.setText("");  // Clear the text field
+            arrivalTimeField.setText("");
+            burstTimeField.setText("");
+            priorityField.setText("");
+            colorField.setText("");
+              
+        });
+
         addLabelAndField("Process Name:", processNameField, 0, 2);
         addLabelAndField("Arrival Time:", arrivalTimeField, 2, 2);
         addLabelAndField("Burst Time:", burstTimeField, 4, 2);

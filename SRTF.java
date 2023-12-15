@@ -141,7 +141,9 @@ public class SRTF {
         }
 
         avrWaiting /= nProcess;
+        avrWaiting = Math.floor(avrWaiting);
         avrTAT /= nProcess;
+        avrTAT = Math.floor(avrTAT);
         Object[] avgWaiting = {"Average waiting time", avrWaiting};
         this.schedulingGUI.addRow(avgWaiting);
         System.out.println("Average waiting time: " + avrWaiting);
@@ -153,7 +155,7 @@ public class SRTF {
 
     public void runProcess(SRTFProcess process, int compTime) {
         int bTime = process.getBurstTime();
-        this.chart.AddColor(compTime, process.getNumber(), process.getColor(), process.getBurstTime());
+        this.chart.AddColor(compTime+1, process.getNumber(), process.getColor(), 1);
         bTime--;
         process.setBurstTime(bTime);
         process.setProcessingTime(compTime);
